@@ -1,3 +1,4 @@
+moment = require('moment')
 
 LEVELS =
     trace: 0
@@ -7,7 +8,7 @@ LEVELS =
     error: 40
 
 defaultConfig =
-    level: 'trace'
+    level: 'debug'
     handleExceptions: false
     json: false
     timestamp: true
@@ -18,10 +19,10 @@ class Logger
 
     constructor: (localConfig) ->
         @name = localConfig.name || globalLoggerConfig.name || module.parent.filename
-        @level = localConfig.level || globalLoggerConfig.level
-        @handleExceptions = localConfig.handleExceptions || globalLoggerConfig.handleExceptions
-        @json = localConfig.json || globalLoggerConfig.json
-        @timestamp = localConfig.timestamp || globalLoggerConfig.timestamp
+        @level = localConfig.level ? globalLoggerConfig.level
+        @handleExceptions = localConfig.handleExceptions ? globalLoggerConfig.handleExceptions
+        @json = localConfig.json ? globalLoggerConfig.json
+        @timestamp = localConfig.timestamp ? globalLoggerConfig.timestamp
 
         @prefix = if @name then @name + " - " else " "
 
@@ -53,12 +54,15 @@ class Logger
     buildMessage: (levelStr, msg) ->
         if @json
             return {
+                timestamp: moment().toJSON(),
                 level: levelStr,
                 message: msg
             }
 
+        if @timestamp
+            "#{moment().format()} #{levelStr} #{@prefix}#{msg}"
         else
-            return "#{levelStr} #{@prefix}#{msg}"
+            "#{levelStr} #{@prefix}#{msg}"
 
     log: (msg, metaData) ->
         if metaData
