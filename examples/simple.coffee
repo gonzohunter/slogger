@@ -5,7 +5,7 @@ global.config =
         handleExceptions: false
 
 # Global config can be overriden with each logger
-logger = require('../lib/logger')({name: __filename, level: 'debug', handleExceptions: false})
+logger = require('../src/slogger')({name: __filename, level: 'debug', handleExceptions: false})
 logger.debug('debug message')
 logger.info('info message')
 logger.warn('warn message')

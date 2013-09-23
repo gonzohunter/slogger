@@ -10,6 +10,7 @@ defaultConfig =
     level: 'trace'
     handleExceptions: false
     json: false
+    timestamp: true
 
 globalLoggerConfig = if global.config and global.config.logger then global.config.logger else defaultConfig
 
@@ -20,6 +21,7 @@ class Logger
         @level = localConfig.level || globalLoggerConfig.level
         @handleExceptions = localConfig.handleExceptions || globalLoggerConfig.handleExceptions
         @json = localConfig.json || globalLoggerConfig.json
+        @timestamp = localConfig.timestamp || globalLoggerConfig.timestamp
 
         @prefix = if @name then @name + " - " else " "
 

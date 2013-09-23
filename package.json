@@ -1,0 +1,25 @@
+{
+  "name": "slogger",
+  "version": "0.0.1",
+  "description": "Simple logger",
+  "keywords": [],
+  "author": "Gonzohunter <colin.hemmings@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/gonzohunter/Slogger.git"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "dependencies": {
+    "moment": "~2.2.1"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*",
+    "coffee-script": "~1.6.3",
+    "docco": "~0.6.2",
+    "nodeunit": "~0.8.1"
+  },
+  "main": "lib/slogger.js"
+}
