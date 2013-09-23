@@ -30,7 +30,8 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>
+            <div class="content"><div class='highlight'><pre>moment = require(<span class="string">'moment'</span>)
+
 LEVELS =
     trace: <span class="number">0</span>
     debug: <span class="number">10</span>,
@@ -39,7 +40,7 @@ LEVELS =
     error: <span class="number">40</span>
 
 defaultConfig =
-    level: <span class="string">'trace'</span>
+    level: <span class="string">'debug'</span>
     handleExceptions: <span class="literal">false</span>
     json: <span class="literal">false</span>
     timestamp: <span class="literal">true</span>
@@ -50,10 +51,10 @@ globalLoggerConfig = <span class="keyword">if</span> global.config <span class="
 
     constructor: (localConfig) -&gt;
         <span class="property">@name</span> = localConfig.name || globalLoggerConfig.name || module.parent.filename
-        <span class="property">@level</span> = localConfig.level || globalLoggerConfig.level
-        <span class="property">@handleExceptions</span> = localConfig.handleExceptions || globalLoggerConfig.handleExceptions
-        <span class="property">@json</span> = localConfig.json || globalLoggerConfig.json
-        <span class="property">@timestamp</span> = localConfig.timestamp || globalLoggerConfig.timestamp
+        <span class="property">@level</span> = localConfig.level ? globalLoggerConfig.level
+        <span class="property">@handleExceptions</span> = localConfig.handleExceptions ? globalLoggerConfig.handleExceptions
+        <span class="property">@json</span> = localConfig.json ? globalLoggerConfig.json
+        <span class="property">@timestamp</span> = localConfig.timestamp ? globalLoggerConfig.timestamp
 
         <span class="property">@prefix</span> = <span class="keyword">if</span> <span class="property">@name</span> <span class="keyword">then</span> <span class="property">@name</span> + <span class="string">" - "</span> <span class="keyword">else</span> <span class="string">" "</span>
 
@@ -85,12 +86,15 @@ globalLoggerConfig = <span class="keyword">if</span> global.config <span class="
     buildMessage: (levelStr, msg) -&gt;
         <span class="keyword">if</span> <span class="property">@json</span>
             <span class="keyword">return</span> {
+                timestamp: moment().toJSON(),
                 level: levelStr,
                 message: msg
             }
 
+        <span class="keyword">if</span> <span class="property">@timestamp</span>
+            <span class="string">"<span class="subst">#{moment().format()}</span> <span class="subst">#{levelStr}</span> <span class="subst">#{@prefix}</span><span class="subst">#{msg}</span>"</span>
         <span class="keyword">else</span>
-            <span class="keyword">return</span> <span class="string">"<span class="subst">#{levelStr}</span> <span class="subst">#{@prefix}</span><span class="subst">#{msg}</span>"</span>
+            <span class="string">"<span class="subst">#{levelStr}</span> <span class="subst">#{@prefix}</span><span class="subst">#{msg}</span>"</span>
 
     log: (msg, metaData) -&gt;
         <span class="keyword">if</span> metaData
